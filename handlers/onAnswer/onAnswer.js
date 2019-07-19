@@ -10,7 +10,9 @@ export const lambda = async (event) => {
     const response = await fetch(`https://slack.com/api/users.profile.get?token=${token}&user=${userId}`)
     const user = await response.json()
 
-    console.log({'user': user})
+    console.log({userId: userId, 'user': user})
+
+    await fetch('https://dcs3ah23lk.execute-api.eu-west-2.amazonaws.com/dev/messageUser', {method: 'POST'})
 
     return {
         statusCode: 200,
