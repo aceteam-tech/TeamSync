@@ -46,6 +46,19 @@ functions:
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
 
+#  Seeding
+  seedQuestions:
+    handler: 'seed/seedQuestions.lambda'
+    description: 'Seeding questions to the table'
+    role:
+      Fn::GetAtt:
+        - IAMLambdaRole
+        - Arn
+    environment:
+      QUESTIONS_TABLE: ${self:custom.questionsTableName}
+      REGION: ${self:provider.region}
+      STAGE: ${self:provider.stage}
+
 resources:
   Resources:
     MessagesTable:
