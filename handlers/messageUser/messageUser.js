@@ -3,12 +3,12 @@ import fetch from 'node-fetch'
 const token = process.env.SLACK_APP_TOKEN
 
 export const lambda = async (event) => {
-    const user = 'UG4F4FTB5'
+    const user = 'GL8PG0K34'
 
     const parameters = {
         token: token,
         channel: user,
-        text: typeof event.body === 'string' ? JSON.stringify(event.body).message.text : event.body.message.text,
+        text: typeof event.body === 'string' ? JSON.parse(event.body).message.text : event.body.message.text,
         username: 'TeamSync'
     }
 
@@ -22,10 +22,5 @@ export const lambda = async (event) => {
 
     return {
         statusCode: 200,
-        body: JSON.stringify({
-            parameters: urlParams,
-            messageSend: true,
-            slackResponse: jsonResponse
-        })
     }
 }
