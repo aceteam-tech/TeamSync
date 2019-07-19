@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Entered the build phase...
+      - sudo npm i -g serverless
+
+      - npm i
+      - sls deploy --stage ${Stage}
+      - npm run seed
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
