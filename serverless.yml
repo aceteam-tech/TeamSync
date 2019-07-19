@@ -7,7 +7,8 @@ plugins:
 
 custom:
   roleId: !Ref IAMLambdaRole
-  slackNotifyUrl: 'test'
+  slackApp:
+    token: ${ssm:TeamSync-slackAppToken}
 
 provider:
   name: 'aws'
@@ -35,7 +36,7 @@ functions:
           path: /answer
           method: post
     environment:
-      SLACK_NOTIFY_URL: ${self:custom.slackNotifyUrl}
+      SLACK_APP_TOKEN: ${self:custom.slackApp.token}
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
 
