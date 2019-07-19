@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Entered the build phase...
+      - npm i
+      - ./node_modules/.bin/serverless deploy --stage ${Stage}
+      - npm run seed
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
