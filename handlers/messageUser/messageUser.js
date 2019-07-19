@@ -3,13 +3,12 @@ import fetch from 'node-fetch'
 const token = process.env.SLACK_APP_TOKEN
 
 export const lambda = async (event) => {
-    //const user = 'UBJUJA2DC'
-    const user = '#team-sync-test-field'
+    const user = 'GL8PG0K34'
 
     const parameters = {
         token: token,
         channel: user,
-        text: 'Hi!',
+        text: typeof event.body === 'string' ? JSON.stringify(event.body).message.text : event.body.message.text,
         username: 'TeamSync'
     }
 
@@ -19,7 +18,7 @@ export const lambda = async (event) => {
         {
             method: 'POST'
         })
-   const jsonResponse =  await response.json()
+    const jsonResponse =  await response.json()
 
     return {
         statusCode: 200,
