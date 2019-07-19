@@ -9,6 +9,9 @@ custom:
   roleId: !Ref IAMLambdaRole
   slackApp:
     token: ${ssm:TeamSync-slackAppToken}
+  messagesTableName: TeamSync-${self:provider.stage}-Messages
+  teamsTableName: TeamSync-${self:provider.stage}-Teams
+  questionsTableName: TeamSync-${self:provider.stage}-Questions
 
 provider:
   name: 'aws'
@@ -37,6 +40,9 @@ functions:
           method: post
     environment:
       SLACK_APP_TOKEN: ${self:custom.slackApp.token}
+      MESSAGES_TABLE: ${self:custom.messagesTableName}
+      TEAMS_TABLE: ${self:custom.teamsTableName}
+      QUESTIONS_TABLE: ${self:custom.questionsTableName}
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
 
@@ -58,6 +64,58 @@ functions:
 
 resources:
   Resources:
+    MessagesTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:custom.messagesTableName}
+        AttributeDefinitions:
+          - AttributeName: 'id'
+            AttributeType: 'S'
+          - AttributeName: 'sessionId'
+            AttributeType: 'S'
+          - AttributeName: 'userId'
+            AttributeType: 'S'
+        KeySchema:
+          - AttributeName: 'id'
+            KeyType: 'HASH'
+        GlobalSecondaryIndexes:
+          - IndexName: 'gsi_session'
+            KeySchema:
+              - AttributeName: 'sessionId'
+                KeyType: 'HASH'
+            Projection:
+              ProjectionType: 'ALL'
+          - IndexName: 'gsi_user'
+            KeySchema:
+              - AttributeName: 'userId'
+                KeyType: 'HASH'
+            Projection:
+              ProjectionType: 'ALL'
+        BillingMode: 'PAY_PER_REQUEST'
+
+    TeamsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:custom.teamsTableName}
+        AttributeDefinitions:
+          - AttributeName: 'id'
+            AttributeType: 'S'
+        KeySchema:
+          - AttributeName: 'id'
+            KeyType: 'HASH'
+        BillingMode: 'PAY_PER_REQUEST'
+
+    QuestionsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:custom.questionsTableName}
+        AttributeDefinitions:
+          - AttributeName: 'id'
+            AttributeType: 'S'
+        KeySchema:
+          - AttributeName: 'id'
+            KeyType: 'HASH'
+        BillingMode: 'PAY_PER_REQUEST'
 
 #   IAM
     IAMLambdaRole:
