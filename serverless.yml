@@ -7,7 +7,7 @@ plugins:
 
 custom:
   roleId: !Ref IAMLambdaRole
-  slackNotifyUrl: ${ssm:slack-events-webhook}
+  slackNotifyUrl: 'test'
 
 provider:
   name: 'aws'

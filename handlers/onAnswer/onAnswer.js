@@ -3,6 +3,6 @@ export const lambda = async (event) => {
 
     return {
         statusCode: 200,
-        body: JSON.stringify(event)
+        body: JSON.stringify({'challenge': JSON.parse(event.body).challenge})
     }
 }
