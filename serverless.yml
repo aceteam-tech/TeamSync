@@ -1,0 +1,61 @@
+service: 'TeamSync'
+frameworkVersion: ">=1.32.0 < 2.0.0"
+plugins:
+  - 'serverless-pseudo-parameters'
+  - 'serverless-plugin-optimize'
+  - 'serverless-webpack'
+
+custom:
+  roleId: !Ref IAMLambdaRole
+  slackNotifyUrl: ${ssm:slack-events-webhook}
+
+provider:
+  name: 'aws'
+  runtime: 'nodejs10.x'
+  region: ${opt:region, 'eu-west-2'}
+  memorySize: '128'
+  stage: ${opt:stage, 'dev'}
+
+package:
+  individually: 'true'
+  exclude:
+    - 'package.json'
+    - 'package-lock.json'
+
+functions:
+  onAnswer:
+    handler: 'handlers/onAnswer/onAnswer.lambda'
+    description: 'TO DEFINE'
+    role:
+      Fn::GetAtt:
+        - IAMLambdaRole
+        - Arn
+    events:
+      - http:
+          path: /answer
+          method: post
+    environment:
+      SLACK_NOTIFY_URL: ${self:custom.slackNotifyUrl}
+      REGION: ${self:provider.region}
+      STAGE: ${self:provider.stage}
+
+resources:
+  Resources:
+
+#   IAM
+    IAMLambdaRole:
+      Type: 'AWS::IAM::Role'
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            -
+              Effect: 'Allow'
+              Principal:
+                Service:
+                  - 'lambda.amazonaws.com'
+              Action:
+                - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - 'arn:aws:iam::aws:policy/AWSLambdaFullAccess'
+        RoleName: TeamSync_${self:provider.stage}_LambdaRole

@@ -1,0 +1,37 @@
+{
+  "name": "thc-api-service",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "jest --watch",
+    "dev": "sls deploy",
+    "prod": "sls deploy --stage production"
+  },
+  "author": "Oskar Kaminski",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.5.0",
+    "lodash.flatmap": "^4.5.0",
+    "lodash.range": "^3.2.0",
+    "lodash.sumby": "^4.6.0",
+    "lodash.uniq": "^4.5.0",
+    "node-fetch": "^2.3.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.480.0",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
+    "babel-loader": "^8.0.6",
+    "jest": "^24.0.0",
+    "serverless": "^1.33.2",
+    "serverless-plugin-optimize": "^4.0.2-rc.1",
+    "serverless-pseudo-parameters": "^2.2.0",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.34.0"
+  }
+}
