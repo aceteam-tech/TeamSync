@@ -5,6 +5,7 @@
   "scripts": {
     "test": "jest --watch",
     "dev": "sls deploy",
+    "seed": "sls invoke local -f seedQuestions",
     "prod": "sls deploy --stage production"
   },
   "author": "Oskar Kaminski",

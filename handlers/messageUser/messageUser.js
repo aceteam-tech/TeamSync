@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 const token = process.env.SLACK_APP_TOKEN
 
 export const lambda = async (event) => {
-    const user = 'GL8PG0K34'
+    const user = 'UG4F4FTB5'
 
     const parameters = {
         token: token,
