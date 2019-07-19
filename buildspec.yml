@@ -4,10 +4,8 @@ phases:
   build:
     commands:
       - echo Entered the build phase...
-      - sudo npm i -g serverless
-
       - npm i
-      - sls deploy --stage ${Stage}
+      - ./node_modules/.bin/serverless deploy --stage ${Stage}
       - npm run seed
 
   post_build:
