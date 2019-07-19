@@ -62,6 +62,22 @@ functions:
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
 
+  subscribe:
+    handler: 'handlers/subscribe/subscribe.lambda'
+    description: 'TO DEFINE'
+    role:
+      Fn::GetAtt:
+        - IAMLambdaRole
+        - Arn
+    events:
+      - http:
+          path: /subscribe
+          method: post
+    environment:
+      SLACK_APP_TOKEN: ${self:custom.slackApp.token}
+      REGION: ${self:provider.region}
+      STAGE: ${self:provider.stage}
+
 #  Seeding
   seedQuestions:
     handler: 'seed/seedQuestions.lambda'
