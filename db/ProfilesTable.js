@@ -5,14 +5,13 @@ const db = new AWS.DynamoDB.DocumentClient()
 
 const TableName = process.env.MESSAGES_TABLE
 
-export default class MessagesTable {
-    static async putMessageAsync(sessionId, name, email, ended){
+export default class ProfilesTable {
+    static async putProfileAsync(sessionId, name, email, ended){
         const params = {
             TableName,
             Item: {
                 id: uuid(),
                 name,
-                cognitoId,
                 teams:[],
                 date: new Date()
             }
