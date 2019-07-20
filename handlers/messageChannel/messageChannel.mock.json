@@ -3,7 +3,8 @@
     {
       "Sns": {
         "Message": {
-          "text": "mocked text"
+          "text": "mocked text",
+          "userId": "UAGH47DBQ"
         }
       }
     }

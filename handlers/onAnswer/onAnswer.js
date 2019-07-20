@@ -22,10 +22,6 @@ export const lambda = async (event) => {
         const userId = body.event.user
         const text = body.event.text
         const teamId = body.team_id
-        // const response = await fetch(`https://slack.com/api/users.profile.get?token=${token}&user=${userId}`)
-        // const user = await response.json()
-
-        // console.log({userId: userId, 'user': user})
 
         const team = await TeamsTable.queryById(teamId)
         let userAnswer = await UsersFeedbackTable.queryBySessionId(team.currentSessionId, userId)
@@ -34,7 +30,7 @@ export const lambda = async (event) => {
             userAnswer = await deprecatedCreateFeedback(team, userId)
             console.log({'userAnswer': userAnswer});
         }
-        if (userAnswer.ended) {
+        if (userAnswer.last) {
             // TODO - can we reply somehow to the user here?
             return feedbackFinished(body.challenge)
         } else {

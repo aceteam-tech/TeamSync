@@ -120,8 +120,9 @@ functions:
       SLACK_APP_TOKEN: ${self:custom.slackApp.token}
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
+      TEAMS_TABLE: ${self:custom.teamsTableName}
 
-#  Seeding
+  #  Seeding
   seedQuestions:
     handler: 'seed/seedQuestions.lambda'
     description: 'Seeding questions to the table'
