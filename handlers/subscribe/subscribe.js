@@ -17,7 +17,7 @@ export const lambda = async ( event ) => {
 
     // console.log({user})
 
-    await TeamsTable.putTeamAsync()
+    await TeamsTable.putTeam()
 
     // await new Promise((res, rej)=> {
     //     const params = {
