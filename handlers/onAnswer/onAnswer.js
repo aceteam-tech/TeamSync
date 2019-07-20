@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 import AWS from 'aws-sdk'
 import UsersFeedbackTable from '../../db/UsersFeedbackTable'
 import QuestionsTable from '../../db/QuestionsTable'
@@ -18,9 +17,7 @@ export const lambda = async ( event ) => {
     const teamId = body.team_id
 
     if (text.toLowerCase().includes('subscribe')) {
-        await subscribe(teamId, userId)
-
-        // await fetch('https://w7e8vhpm6d.execute-api.eu-west-2.amazonaws.com/dev/subscribe', { method: 'POST', body: {} })
+        return subscribe(teamId, userId)
     }
     else {
 
@@ -110,17 +107,17 @@ function defaultResponse( challenge ) {
 }
 
 async function subscribe( id, userId ) {
-    console.log({id})
+    const team = await TeamsTable.queryById(id)
 
-    const doesTeamExist = await TeamsTable.queryById(id)
-
-    console.log({ doesTeamExist })
-
-    if (!doesTeamExist) {
+    if (!team) {
         await TeamsTable.putTeam(id, [userId])
-    }
-    else {
-        console.log('teamexists')
+        return notifyChannel('Consider it done! You been added.', userId)
     }
 
+    if(team.users.includes(userId)) {
+        return notifyChannel('Already there mate!', userId)
+    }
+
+    await notifyChannel('Done deal! You been added.', userId)
+    await TeamsTable.assignUser(id, userId)
 }

@@ -29,6 +29,7 @@ export default class TeamsTable {
         return (await db.query(queryParams).promise()).Items[0]
     }
 
+    // @TODO to update
     static async assignUser(teamId, userId){
         const queryParams = {
             TableName,
@@ -40,6 +41,7 @@ export default class TeamsTable {
         return (await db.query(queryParams).promise()).Items[0]
     }
 
+    // @TODO to update
     static async removeUser(teamId, userId){
         const queryParams = {
             TableName,
