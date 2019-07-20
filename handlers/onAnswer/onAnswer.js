@@ -13,6 +13,10 @@ export const lambda = async ( event ) => {
     console.log({ 'event': event })
     const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body
 
+    if(body.type === 'url_verification'){
+        return defaultResponse(body.challenge)
+    }
+
     const userId = body.event.user
     const text = body.event.text
     const teamId = body.team_id
@@ -53,9 +57,8 @@ export const lambda = async ( event ) => {
 
                 await notifyChannel(text, userId, JSON.stringify(attachments))
             }
+            return defaultResponse(body.challenge)
         }
-
-        return defaultResponse(body.challenge)
     }
 }
 

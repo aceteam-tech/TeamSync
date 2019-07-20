@@ -9,9 +9,18 @@ const sns = new AWS.SNS({ apiVersion: '2010-03-31' })
 const TopicArn = process.env.NEW_SESSION_STARTED_TOPIC
 
 export const lambda = async (event) => {
-    console.log({ 'event': event })
+    const {text, challenge} = typeof event.body === 'string' ? JSON.parse(event.body) : event.body
 
-    return defaultResponse(body.challenge)
+    const params = {
+        Message: JSON.stringify({text}),
+        TopicArn
+    }
+
+    console.log(params)
+
+    await sns.publish(params).promise()
+
+    return defaultResponse(challenge)
 }
 
 function defaultResponse(challenge) {

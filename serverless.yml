@@ -106,23 +106,6 @@ functions:
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
 
-  subscribe:
-    handler: 'handlers/subscribe/subscribe.lambda'
-    description: 'TO DEFINE'
-    role:
-      Fn::GetAtt:
-        - IAMLambdaRole
-        - Arn
-    events:
-      - http:
-          path: /subscribe
-          method: post
-    environment:
-      SLACK_APP_TOKEN: ${self:custom.slackApp.token}
-      REGION: ${self:provider.region}
-      STAGE: ${self:provider.stage}
-      TEAMS_TABLE: ${self:custom.teamsTableName}
-
   startNewSession:
     handler: 'handlers/startNewSession/startNewSession.lambda'
     description: 'Starts new team session and send first question to its users'
@@ -176,7 +159,7 @@ resources:
       Type: 'AWS::SNS::Topic'
       Properties:
         DisplayName: Notify whenever new user feedback is completed
-        TopicName: ${self:custom.userFeedbackCompleteTopicName}
+        TopicName: ${self:custom.newSessionStartedTopicName}
 
 ### IAM ###
     IAMLambdaRole:

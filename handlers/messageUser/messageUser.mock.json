@@ -1,7 +1,5 @@
 {
   "body": {
-    "message":{
-      "text": "Inny test"
-    }
+    "text": "Mocked Test"
   }
 }
