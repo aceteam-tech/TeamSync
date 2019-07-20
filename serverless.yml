@@ -103,40 +103,6 @@ functions:
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
 
-  messageChannel:
-    handler: 'handlers/messageChannel/messageChannel.lambda'
-    description: 'TO DEFINE'
-    role:
-      Fn::GetAtt:
-        - IAMLambdaRole
-        - Arn
-    events:
-      - http:
-          path: /messageChannel
-          method: post
-    environment:
-      SLACK_APP_TOKEN: ${self:custom.slackApp.token}
-      CHANNEL_ID: ${self:custom.slackApp.channelId}
-      REGION: ${self:provider.region}
-      STAGE: ${self:provider.stage}
-
-  subscribe:
-    handler: 'handlers/subscribe/subscribe.lambda'
-    description: 'TO DEFINE'
-    role:
-      Fn::GetAtt:
-        - IAMLambdaRole
-        - Arn
-    events:
-      - http:
-          path: /subscribe
-          method: post
-    environment:
-      SLACK_APP_TOKEN: ${self:custom.slackApp.token}
-      REGION: ${self:provider.region}
-      STAGE: ${self:provider.stage}
-      TEAMS_TABLE: ${self:custom.teamsTableName}
-
   #  Seeding
   seedQuestions:
     handler: 'seed/seedQuestions.lambda'
