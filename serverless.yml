@@ -10,6 +10,7 @@ custom:
   slackApp:
     token: ${ssm:TeamSync-slackAppToken}
     channelId: 'GL8PG0K34'
+    appId: 'ALL6E8205'
   messagesTableName: TeamSync-${self:provider.stage}-Messages
   teamsTableName: TeamSync-${self:provider.stage}-Teams
   questionsTableName: TeamSync-${self:provider.stage}-Questions
@@ -45,6 +46,7 @@ functions:
               Content-Type: "'application/json'"
     environment:
       SLACK_APP_TOKEN: ${self:custom.slackApp.token}
+      APP_ID: ${self:custom.slackApp.appId}
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
 
