@@ -10,7 +10,7 @@ custom:
   slackApp:
     token: ${ssm:TeamSync-slackAppToken}
     channelId: 'GL8PG0K34'
-    appId: 'ALL6E8205'
+    appId: ${ssm:TeamSync-slackAppId}
   messagesTableName: TeamSync-${self:provider.stage}-Messages
   teamsTableName: TeamSync-${self:provider.stage}-Teams
   questionsTableName: TeamSync-${self:provider.stage}-Questions
