@@ -11,7 +11,7 @@ custom:
     token: ${ssm:TeamSync-slackAppToken}
     channelId: 'GL8PG0K34'
     appId: ${ssm:TeamSync-slackAppId}
-  messagesTableName: TeamSync-${self:provider.stage}-Messages
+  usersFeedbackTableName: TeamSync-${self:provider.stage}-UsersFeedback
   teamsTableName: TeamSync-${self:provider.stage}-Teams
   questionsTableName: TeamSync-${self:provider.stage}-Questions
   profilesTableName: TeamSync-${self:provider.stage}-Profiles
@@ -64,7 +64,7 @@ functions:
 
     environment:
       SLACK_APP_TOKEN: ${self:custom.slackApp.token}
-      MESSAGES_TABLE: ${self:custom.messagesTableName}
+      USERS_FEEDBACK_TABLE: ${self:custom.usersFeedbackTableName}
       TEAMS_TABLE: ${self:custom.teamsTableName}
       QUESTIONS_TABLE: ${self:custom.questionsTableName}
       REGION: ${self:provider.region}
@@ -146,10 +146,10 @@ functions:
 
 resources:
   Resources:
-    MessagesTable:
+    UsersFeedbackTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
-        TableName: ${self:custom.messagesTableName}
+        TableName: ${self:custom.usersFeedbackTableName}
         AttributeDefinitions:
           - AttributeName: 'id'
             AttributeType: 'S'
