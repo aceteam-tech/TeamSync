@@ -1,7 +1,26 @@
 {
-  "body": {
-    "message":{
-      "text": "Inny test"
+  "Records": [
+    {
+      "Sns": {
+        "Message": {
+          "text": "Daily Planning",
+          "userId": "UAGH47DBQ",
+          "attachments": [
+            {
+              "fallback": "Testing Question and Answer",
+              "title": "Test Question",
+              "text": "Test Answer",
+              "color": "#412af4"
+            },
+            {
+              "fallback": "Testing Question and Answer",
+              "title": "Test Question",
+              "text": "Test Answer",
+              "color": "#412af4"
+            }
+          ]
+        }
+      }
     }
-  }
+  ]
 }
