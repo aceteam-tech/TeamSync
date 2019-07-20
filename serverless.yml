@@ -132,6 +132,18 @@ functions:
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
 
+  seedTeam:
+    handler: 'seed/seedTeam.lambda'
+    description: 'Seeding first team to the table'
+    role:
+      Fn::GetAtt:
+        - IAMLambdaRole
+        - Arn
+    environment:
+      TEAMS_TABLE: ${self:custom.teamsTableName}
+      REGION: ${self:provider.region}
+      STAGE: ${self:provider.stage}
+
 resources:
   Resources:
     MessagesTable:
