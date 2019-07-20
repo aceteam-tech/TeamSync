@@ -37,7 +37,7 @@ export const lambda = async (event) => {
             const ended = await addUserAnswer(userAnswer, text)
             if(ended){
                 const finalFeedback = await UsersFeedbackTable.queryBySessionId(team.currentSessionId, userId)
-                await notifyChannel(JSON.stringify(finalFeedback))
+                await notifyChannel(JSON.stringify(finalFeedback), userId)
             }
         }
 
@@ -64,9 +64,9 @@ async function deprecatedCreateFeedback(team, userId){
     return UsersFeedbackTable.queryBySessionId(team.currentSessionId, userId)
 }
 
-async function notifyChannel(text){
+async function notifyChannel(text, userId){
     const params = {
-        Message: JSON.stringify({text}),
+        Message: JSON.stringify({text, userId}),
         TopicArn
     }
 
