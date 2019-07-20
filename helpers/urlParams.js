@@ -1,0 +1,1 @@
+export const urlParams = (params) => Object.keys(params).map(k => `${k}=${params[k]}`).reduce((a,b) => a+'&'+b)

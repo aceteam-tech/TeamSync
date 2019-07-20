@@ -9,6 +9,7 @@ custom:
   roleId: !Ref IAMLambdaRole
   slackApp:
     token: ${ssm:TeamSync-slackAppToken}
+    channelId: 'GL8PG0K34'
   messagesTableName: TeamSync-${self:provider.stage}-Messages
   teamsTableName: TeamSync-${self:provider.stage}-Teams
   questionsTableName: TeamSync-${self:provider.stage}-Questions
@@ -27,6 +28,25 @@ package:
     - 'package-lock.json'
 
 functions:
+  botChannel:
+    handler: 'handlers/botChannel/botChannel.lambda'
+    description: 'TO DEFINE'
+    role:
+      Fn::GetAtt:
+        - IAMLambdaRole
+        - Arn
+    events:
+      - http:
+          path: /botChannel
+          method: get
+          response:
+            headers:
+              Content-Type: "'application/json'"
+    environment:
+      SLACK_APP_TOKEN: ${self:custom.slackApp.token}
+      REGION: ${self:provider.region}
+      STAGE: ${self:provider.stage}
+
   onAnswer:
     handler: 'handlers/onAnswer/onAnswer.lambda'
     description: 'TO DEFINE'
@@ -38,6 +58,7 @@ functions:
       - http:
           path: /answer
           method: post
+
     environment:
       SLACK_APP_TOKEN: ${self:custom.slackApp.token}
       MESSAGES_TABLE: ${self:custom.messagesTableName}
@@ -59,6 +80,23 @@ functions:
           method: post
     environment:
       SLACK_APP_TOKEN: ${self:custom.slackApp.token}
+      REGION: ${self:provider.region}
+      STAGE: ${self:provider.stage}
+
+  messageChannel:
+    handler: 'handlers/messageChannel/messageChannel.lambda'
+    description: 'TO DEFINE'
+    role:
+      Fn::GetAtt:
+        - IAMLambdaRole
+        - Arn
+    events:
+      - http:
+          path: /messageChannel
+          method: post
+    environment:
+      SLACK_APP_TOKEN: ${self:custom.slackApp.token}
+      CHANNEL_ID: ${self:custom.slackApp.channelId}
       REGION: ${self:provider.region}
       STAGE: ${self:provider.stage}
 
