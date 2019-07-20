@@ -16,6 +16,7 @@ custom:
   questionsTableName: TeamSync-${self:provider.stage}-Questions
   profilesTableName: TeamSync-${self:provider.stage}-Profiles
   userFeedbackCompleteTopicName: UserFeedbackCompleteTopic-${self:provider.stage}
+  newSessionStartedTopicName: NewSessionStartedTopic-${self:provider.stage}
 
 provider:
   name: 'aws'
@@ -80,9 +81,9 @@ functions:
         - IAMLambdaRole
         - Arn
     events:
-      - http:
-          path: /messageUser
-          method: post
+      - sns:
+          arn: !Ref NewSessionStartedTopic
+          topicName: ${self:custom.newSessionStartedTopicName}
     environment:
       SLACK_APP_TOKEN: ${self:custom.slackApp.token}
       REGION: ${self:provider.region}
@@ -122,6 +123,21 @@ functions:
       STAGE: ${self:provider.stage}
       TEAMS_TABLE: ${self:custom.teamsTableName}
 
+  startNewSession:
+    handler: 'handlers/startNewSession/startNewSession.lambda'
+    description: 'Starts new team session and send first question to its users'
+    role:
+      Fn::GetAtt:
+        - IAMLambdaRole
+        - Arn
+    environment:
+      REGION: ${self:provider.region}
+      STAGE: ${self:provider.stage}
+      USERS_FEEDBACK_TABLE: ${self:custom.usersFeedbackTableName}
+      NEW_SESSION_STARTED_TOPIC: !Ref NewSessionStartedTopic
+      TEAMS_TABLE: ${self:custom.teamsTableName}
+      QUESTIONS_TABLE: ${self:custom.questionsTableName}
+
   #  Seeding
   seedQuestions:
     handler: 'seed/seedQuestions.lambda'
@@ -151,6 +167,12 @@ resources:
   Resources:
 ### SNS ###
     UserFeedbackCompleteTopic:
+      Type: 'AWS::SNS::Topic'
+      Properties:
+        DisplayName: Notify whenever new user feedback is completed
+        TopicName: ${self:custom.userFeedbackCompleteTopicName}
+
+    NewSessionStartedTopic:
       Type: 'AWS::SNS::Topic'
       Properties:
         DisplayName: Notify whenever new user feedback is completed
