@@ -37,7 +37,19 @@ export const lambda = async (event) => {
             const ended = await addUserAnswer(userAnswer, text)
             if(ended){
                 const finalFeedback = await UsersFeedbackTable.queryBySessionId(team.currentSessionId, userId)
-                await notifyChannel(JSON.stringify(finalFeedback), userId)
+
+                const attachments = finalFeedback.answers.map(ans =>  {
+                        return {
+                            fallback: ans.question,
+                            title: ans.question,
+                            text: ans.answer,
+                            color: "#36a64f"
+                        }
+                })
+
+                const text = 'Daily Planning'
+
+                await notifyChannel(text, userId, JSON.stringify(attachments))
             }
         }
 
@@ -53,7 +65,9 @@ async function addUserAnswer(userFeedback, questionAnswer) {
     })
     const currentQuestion = await QuestionsTable.queryByOrderId((userFeedback.answers.length + 2).toString())
     const ended = !currentQuestion
-    await UsersFeedbackTable.addQuestion(userFeedback.id, answers, currentQuestion, ended)
+    if(!ended){
+        await UsersFeedbackTable.addQuestion(userFeedback.id, answers, currentQuestion, ended)
+    }
 
     return ended
 }
@@ -64,9 +78,10 @@ async function deprecatedCreateFeedback(team, userId){
     return UsersFeedbackTable.queryBySessionId(team.currentSessionId, userId)
 }
 
-async function notifyChannel(text, userId){
+async function notifyChannel(text, userId, attachments){
+
     const params = {
-        Message: JSON.stringify({text, userId}),
+        Message: JSON.stringify({text, userId, attachments}),
         TopicArn
     }
 

@@ -3,8 +3,22 @@
     {
       "Sns": {
         "Message": {
-          "text": "mocked text",
-          "userId": "UAGH47DBQ"
+          "text": "Daily Planning",
+          "userId": "UAGH47DBQ",
+          "attachments": [
+            {
+              "fallback": "Testing Question and Answer",
+              "title": "Test Question",
+              "text": "Test Answer",
+              "color": "#412af4"
+            },
+            {
+              "fallback": "Testing Question and Answer",
+              "title": "Test Question",
+              "text": "Test Answer",
+              "color": "#412af4"
+            }
+          ]
         }
       }
     }

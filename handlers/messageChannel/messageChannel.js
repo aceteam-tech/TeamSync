@@ -4,7 +4,7 @@ const token = process.env.SLACK_APP_TOKEN
 const channelId = process.env.CHANNEL_ID
 
 export const lambda = async (event) => {
-    const { text, userId } = typeof event.Records[0].Sns.Message === 'string' ?
+    const { text, userId, attachments } = typeof event.Records[0].Sns.Message === 'string' ?
         JSON.parse(event.Records[0].Sns.Message) :
         event.Records[0].Sns.Message
 
@@ -16,6 +16,7 @@ export const lambda = async (event) => {
         token: token,
         channel: channelId,
         text,
+        attachments: JSON.stringify(attachments),
         username: real_name,
         icon_url: image_original
     }
