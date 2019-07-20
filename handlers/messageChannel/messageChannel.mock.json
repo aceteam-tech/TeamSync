@@ -1,0 +1,11 @@
+{
+  "Records": [
+    {
+      "Sns": {
+        "Message": {
+          "text": "mocked text"
+        }
+      }
+    }
+  ]
+}

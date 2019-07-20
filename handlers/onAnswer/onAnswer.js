@@ -1,9 +1,13 @@
 import fetch from 'node-fetch'
+import AWS from 'aws-sdk'
 import UsersFeedbackTable from '../../db/UsersFeedbackTable'
 import QuestionsTable from '../../db/QuestionsTable'
 import TeamsTable from '../../db/TeamsTable'
 
+const sns = new AWS.SNS({apiVersion: '2010-03-31'})
+
 const token = process.env.SLACK_APP_TOKEN
+const TopicArn = process.env.USER_FEEDBACK_COMPLETE_TOPIC
 
 export const lambda = async (event) => {
     console.log({ 'event': event })
@@ -65,15 +69,12 @@ async function deprecatedCreateFeedback(team, userId){
 }
 
 async function notifyChannel(text){
-    await fetch('https://dcs3ah23lk.execute-api.eu-west-2.amazonaws.com/dev/messageChannel',
-        {
-            method: 'POST',
-            body: JSON.stringify({
-                message: {
-                    text
-                }
-            })
-        })
+    const params = {
+        Message: JSON.stringify({text}),
+        TopicArn
+    }
+
+    await sns.publish(params).promise()
 }
 
 function feedbackFinished(challenge){
