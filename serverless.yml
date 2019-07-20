@@ -53,7 +53,7 @@ functions:
 
   onAnswer:
     handler: 'handlers/onAnswer/onAnswer.lambda'
-    description: 'TO DEFINE'
+    description: 'Executed whenever user message the bot'
     role:
       Fn::GetAtt:
         - IAMLambdaRole
@@ -90,7 +90,7 @@ functions:
 
   messageChannel:
     handler: 'handlers/messageChannel/messageChannel.lambda'
-    description: 'TO DEFINE'
+    description: 'Sends the message to a predefined slack channel'
     role:
       Fn::GetAtt:
         - IAMLambdaRole
