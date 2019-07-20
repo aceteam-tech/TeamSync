@@ -8,8 +8,8 @@ export const lambda = async (event) => {
         JSON.parse(event.Records[0].Sns.Message) :
         event.Records[0].Sns.Message
 
-    const response = await fetch(`https://slack.com/api/users.profile.get?token=${token}&user=${userId}`)
-    const {profile} = await response.json()
+    const responseProfile = await fetch(`https://slack.com/api/users.profile.get?token=${token}&user=${userId}`)
+    const {profile} = await responseProfile.json()
     const {real_name, image_original} = profile
 
     const parameters = {
@@ -22,14 +22,14 @@ export const lambda = async (event) => {
 
     console.log({'parameters': parameters});
 
-    const urlParams = Object.keys(parameters).map(k => `${k}=${parameters[k]}`).reduce((a,b) => a+'&'+b)
+    const urlParams = Object.keys(parameters).map(k => `${k}=${encodeURIComponent(parameters[k])}`).reduce((a,b) => a+'&'+b)
 
-    const response = await fetch(`https://slack.com/api/chat.postMessage?${urlParams}`,
+    const responsePostMessage = await fetch(`https://slack.com/api/chat.postMessage?${urlParams}`,
         {
             method: 'POST'
         })
 
-    const resolved = await response.json()
+    const resolved = await responsePostMessage.json()
     console.log({'resolved': resolved});
 
     return {
