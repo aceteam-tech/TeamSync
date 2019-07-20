@@ -12,6 +12,7 @@ custom:
   messagesTableName: TeamSync-${self:provider.stage}-Messages
   teamsTableName: TeamSync-${self:provider.stage}-Teams
   questionsTableName: TeamSync-${self:provider.stage}-Questions
+  profilesTableName: TeamSync-${self:provider.stage}-Profiles
 
 provider:
   name: 'aws'
@@ -121,7 +122,6 @@ resources:
             Projection:
               ProjectionType: 'ALL'
         BillingMode: 'PAY_PER_REQUEST'
-
     TeamsTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
@@ -133,11 +133,21 @@ resources:
           - AttributeName: 'id'
             KeyType: 'HASH'
         BillingMode: 'PAY_PER_REQUEST'
-
     QuestionsTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         TableName: ${self:custom.questionsTableName}
+        AttributeDefinitions:
+          - AttributeName: 'id'
+            AttributeType: 'S'
+        KeySchema:
+          - AttributeName: 'id'
+            KeyType: 'HASH'
+        BillingMode: 'PAY_PER_REQUEST'
+    ProfilesTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:custom.profilesTableName}
         AttributeDefinitions:
           - AttributeName: 'id'
             AttributeType: 'S'
