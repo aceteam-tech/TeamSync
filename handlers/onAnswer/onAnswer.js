@@ -4,7 +4,7 @@ import UsersFeedbackTable from '../../db/UsersFeedbackTable'
 import QuestionsTable from '../../db/QuestionsTable'
 import TeamsTable from '../../db/TeamsTable'
 
-const sns = new AWS.SNS({apiVersion: '2010-03-31'})
+const sns = new AWS.SNS({ apiVersion: '2010-03-31' })
 
 const token = process.env.SLACK_APP_TOKEN
 const TopicArn = process.env.USER_FEEDBACK_COMPLETE_TOPIC

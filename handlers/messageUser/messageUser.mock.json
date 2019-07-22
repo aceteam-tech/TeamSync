@@ -1,5 +1,11 @@
 {
-  "body": {
-    "text": "Mocked Test"
-  }
+  "Records": [
+    {
+      "Sns": {
+        "Message": {
+          "text": "Mocked text"
+        }
+      }
+    }
+  ]
 }

@@ -4,7 +4,9 @@ import { urlParams } from '../../helpers/urlParams'
 const token = process.env.SLACK_APP_TOKEN
 
 export const lambda = async (event) => {
-    const {text, attachments} = typeof event.body === 'string' ? JSON.parse(event.body) : event.body
+    const {text, attachments} = typeof event.Records[0].Sns.Message === 'string' ?
+        JSON.parse(event.Records[0].Sns.Message) :
+        event.Records[0].Sns.Message
 
     const channelIdResponse = await fetch(`https://36lh0kji86.execute-api.eu-west-2.amazonaws.com/dev/botChannel`)
 
