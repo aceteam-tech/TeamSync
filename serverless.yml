@@ -4,6 +4,7 @@ plugins:
   - 'serverless-pseudo-parameters'
   - 'serverless-plugin-optimize'
   - 'serverless-webpack'
+  - 'serverless-export-env'
 
 custom:
   roleId: !Ref IAMLambdaRole
