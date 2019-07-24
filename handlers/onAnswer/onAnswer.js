@@ -17,7 +17,7 @@ export const lambda = async ( event ) => {
     const teamId = body.team_id
 
     if (text.toLowerCase().includes('subscribe')) {
-        return subscribe(teamId, userId)
+        await subscribe(teamId, userId)
     }
     else {
 
@@ -52,8 +52,9 @@ export const lambda = async ( event ) => {
             }
         }
 
-        return defaultResponse(body.challenge)
+        // return defaultResponse(body.challenge)
     }
+    return defaultResponse(body.challenge)
 }
 
 async function addUserAnswer( userFeedback, questionAnswer ) {
@@ -84,7 +85,7 @@ async function notifyChannel(text, userId, attachments){
         TopicArn
     }
 
-    await sns.publish(params).promise()
+    return sns.publish(params).promise()
 }
 
 function feedbackFinished( challenge ) {
@@ -111,13 +112,15 @@ async function subscribe( id, userId ) {
 
     if (!team) {
         await TeamsTable.putTeam(id, [userId])
-        return notifyChannel('Consider it done! You been added.', userId)
+        await notifyChannel('Consider it done! You been added.', userId)
+        return
     }
 
     if(team.users.includes(userId)) {
-        return notifyChannel('Already there mate!', userId)
+        await notifyChannel('Already there mate!', userId)
+        return
     }
 
-    await notifyChannel('Done deal! You been added.', userId)
     await TeamsTable.assignUser(id, userId)
+    await notifyChannel('Done deal! You been added.', userId)
 }
