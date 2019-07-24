@@ -52,9 +52,8 @@ export const lambda = async ( event ) => {
             }
         }
 
-        // return defaultResponse(body.challenge)
+        return defaultResponse(body.challenge)
     }
-    return defaultResponse(body.challenge)
 }
 
 async function addUserAnswer( userFeedback, questionAnswer ) {
