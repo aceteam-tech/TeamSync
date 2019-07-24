@@ -3,7 +3,7 @@ import UsersFeedbackTable from '../../db/UsersFeedbackTable'
 import QuestionsTable from '../../db/QuestionsTable'
 import TeamsTable from '../../db/TeamsTable'
 
-const sns = new AWS.SNS({apiVersion: '2010-03-31'})
+const sns = new AWS.SNS({ apiVersion: '2010-03-31' })
 
 const token = process.env.SLACK_APP_TOKEN
 const TopicArn = process.env.USER_FEEDBACK_COMPLETE_TOPIC
@@ -11,6 +11,10 @@ const TopicArn = process.env.USER_FEEDBACK_COMPLETE_TOPIC
 export const lambda = async ( event ) => {
     console.log({ 'event': event })
     const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body
+
+    if(body.type === 'url_verification'){
+        return defaultResponse(body.challenge)
+    }
 
     const userId = body.event.user
     const text = body.event.text
@@ -50,9 +54,8 @@ export const lambda = async ( event ) => {
 
                 await notifyChannel(text, userId, JSON.stringify(attachments))
             }
+            return defaultResponse(body.challenge)
         }
-
-        return defaultResponse(body.challenge)
     }
 }
 

@@ -1,7 +1,11 @@
 {
-  "body": {
-    "message":{
-      "text": "Inny test"
+  "Records": [
+    {
+      "Sns": {
+        "Message": {
+          "text": "Mocked text"
+        }
+      }
     }
-  }
+  ]
 }
