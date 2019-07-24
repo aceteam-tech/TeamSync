@@ -27,11 +27,13 @@ export const lambda = async ( event ) => {
 
         const team = await TeamsTable.queryById(teamId)
         let userAnswer = await UsersFeedbackTable.queryBySessionId(team.currentSessionId, userId)
+
         if (!userAnswer) {
             // TODO: To remove - UsersFeedback entry will be created on scheduled event
             userAnswer = await deprecatedCreateFeedback(team, userId)
             console.log({ 'userAnswer': userAnswer })
         }
+
         if (userAnswer.last) {
             // TODO - can we reply somehow to the user here?
             return feedbackFinished(body.challenge)
@@ -54,9 +56,10 @@ export const lambda = async ( event ) => {
 
                 await notifyChannel(text, userId, JSON.stringify(attachments))
             }
-            return defaultResponse(body.challenge)
         }
     }
+
+    return defaultResponse(body.challenge)
 }
 
 async function addUserAnswer( userFeedback, questionAnswer ) {
@@ -115,7 +118,6 @@ async function subscribe( id, userId ) {
     if (!team) {
         await TeamsTable.putTeam(id, [userId])
         await notifyChannel('Consider it done! You been added.', userId)
-        return
     }
 
     if(team.users.includes(userId)) {
