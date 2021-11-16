@@ -28,7 +28,7 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/runtime": "^7.4.5",
-    "aws-sdk": "^2.480.0",
+    "aws-sdk": "^2.814.0",
     "babel-loader": "^8.0.6",
     "jest": "^24.0.0",
     "serverless": "^1.33.2",
